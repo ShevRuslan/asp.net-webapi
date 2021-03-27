@@ -37,5 +37,30 @@ namespace WebApplication1.Controllers
             List<FilesLogs> foundBooks = jsonObject.files.FindAll(file => file.result == value);
             return new ObjectResult(foundBooks);
         }
+        [HttpGet("api/errors")]
+        public IActionResult GetErrors(bool value)
+        {
+            StreamReader stream = new StreamReader(pathToJson);
+            FileLogs jsonObject = JsonSerializer.Deserialize<FileLogs>(stream.ReadToEnd());
+            List<FilesLogs> files = jsonObject.files.FindAll(file => file.result == false);
+            List<FileErrors> filesErrors = new List<FileErrors>();
+            foreach(FilesLogs file in files)
+            {
+                List<string> errors = new List<string>();
+
+                foreach(ErrorLogs error in file.errors)
+                {
+                    errors.Add(error.error);
+                }
+
+
+                filesErrors.Add(new FileErrors
+                {
+                    filename = file.filename,
+                    errors = errors
+                });
+            }
+            return new ObjectResult(filesErrors);
+        }
     }
 }
