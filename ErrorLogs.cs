@@ -7,9 +7,9 @@ namespace WebApplication1
 {
     public class ErrorLogs
     {
-        public string Module { get; set; }
-        public int Ecode { get; set; }
-        public string Error { get; set; }
+        public string module { get; set; }
+        public int ecode { get; set; }
+        public string error { get; set; }
 
     }
 }

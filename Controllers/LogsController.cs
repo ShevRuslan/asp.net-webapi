@@ -14,11 +14,19 @@ namespace WebApplication1.Controllers
     {
         private string pathToJson = "data.json";
 
-        [HttpGet, Route("api/allData")]
-        public IActionResult Get ()
+        [HttpGet("api/allData")]
+        public IActionResult GetAllData ()
         {
             StreamReader stream = new StreamReader(pathToJson);
             return new ObjectResult(stream.ReadToEnd());
+        }
+
+        [HttpGet("api/scan")]
+        public IActionResult GetScan()
+        {
+            StreamReader stream = new StreamReader(pathToJson);
+            FileLogs jsonObject = JsonSerializer.Deserialize<FileLogs>(stream.ReadToEnd());
+            return new ObjectResult(jsonObject.scan);
         }
     }
 }

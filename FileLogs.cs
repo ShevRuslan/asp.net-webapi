@@ -7,9 +7,7 @@ namespace WebApplication1
 {
     public class FileLogs
     {
-        public string Filename { get; set; }
-        public bool Result { get; set; }
-        public List<ErrorLogs> Errors { get; set; }
-        public string ScanTime { get; set; }
+        public Scan scan { get; set; }
+        public List<FilesLogs> files { get; set; }
     }
 }

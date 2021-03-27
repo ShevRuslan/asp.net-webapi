@@ -7,9 +7,9 @@ namespace WebApplication1
 {
     public class Scan
     {
-        public string ScanName { get; set; }
-        public string Db { get; set; }
-        public string Server { get; set; }
-        public int ErrorCount { get; set; }
+        public string scanTime { get; set; }
+        public string db { get; set; }
+        public string server { get; set; }
+        public int errorCount { get; set; }
     }
 }
