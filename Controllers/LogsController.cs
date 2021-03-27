@@ -62,5 +62,12 @@ namespace WebApplication1.Controllers
             }
             return new ObjectResult(filesErrors);
         }
+        [HttpGet("api/errors/count")]
+        public IActionResult GetErrorCount(bool value)
+        {
+            StreamReader stream = new StreamReader(pathToJson);
+            FileLogs jsonObject = JsonSerializer.Deserialize<FileLogs>(stream.ReadToEnd());
+            return new ObjectResult(jsonObject.scan.errorCount);
+        }
     }
 }
