@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using System.IO;
+using System.Reflection;
 
 namespace WebApplication1.Controllers
 {
@@ -145,6 +146,15 @@ namespace WebApplication1.Controllers
             {
                 return BadRequest(new { error = "Данные не правильные! Ошибка парсинга!" });
             }
+        }
+        [HttpGet("api/service/serviceInfo")]
+        public IActionResult GetServiceInfo()
+        {
+            return new ObjectResult(new ServiceInfoDTO { 
+                AppName = Assembly.GetExecutingAssembly().FullName,
+                Version = Assembly.GetExecutingAssembly().GetName().Version.ToString(),
+                DateUtc = DateTime.Now.ToUniversalTime(),
+            });
         }
     }
 }
