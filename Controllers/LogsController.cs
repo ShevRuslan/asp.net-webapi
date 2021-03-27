@@ -5,17 +5,20 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Text.Json;
 using System.Text.Json.Serialization;
+using System.IO;
 
 namespace WebApplication1.Controllers
 {
+    [ApiController]
     public class LogsController : Controller
     {
         private string pathToJson = "data.json";
 
-        public IActionResult Index()
+        [HttpGet, Route("api/allData")]
+        public IActionResult Get ()
         {
-            return View();
+            StreamReader stream = new StreamReader(pathToJson);
+            return new ObjectResult(stream.ReadToEnd());
         }
-        private ReadFile
     }
 }
