@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace WebApplication1
 {
-    public class FileErrors
+    public class FileErrorsDTO
     {
         public string filename { get; set; }
         public List<string> errors { get; set; }

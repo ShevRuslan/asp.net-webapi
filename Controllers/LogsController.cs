@@ -43,7 +43,7 @@ namespace WebApplication1.Controllers
             StreamReader stream = new StreamReader(pathToJson);
             FileLogs jsonObject = JsonSerializer.Deserialize<FileLogs>(stream.ReadToEnd());
             List<FilesLogs> files = jsonObject.files.FindAll(file => file.result == false);
-            List<FileErrors> filesErrors = new List<FileErrors>();
+            List<FileErrorsDTO> filesErrors = new List<FileErrorsDTO>();
             foreach(FilesLogs file in files)
             {
                 List<string> errors = new List<string>();
@@ -54,7 +54,7 @@ namespace WebApplication1.Controllers
                 }
 
 
-                filesErrors.Add(new FileErrors
+                filesErrors.Add(new FileErrorsDTO
                 {
                     filename = file.filename,
                     errors = errors
@@ -68,6 +68,34 @@ namespace WebApplication1.Controllers
             StreamReader stream = new StreamReader(pathToJson);
             FileLogs jsonObject = JsonSerializer.Deserialize<FileLogs>(stream.ReadToEnd());
             return new ObjectResult(jsonObject.scan.errorCount);
+        }
+        [HttpGet("api/errors/{index}")]
+        public IActionResult GetErrorCount(int index)
+        {
+            StreamReader stream = new StreamReader(pathToJson);
+            FileLogs jsonObject = JsonSerializer.Deserialize<FileLogs>(stream.ReadToEnd());
+            List<FilesLogs> files = jsonObject.files.FindAll(file => file.result == false);
+            List<FileErrorsDTO> filesErrors = new List<FileErrorsDTO>();
+            foreach (FilesLogs file in files)
+            {
+                List<string> errors = new List<string>();
+
+                foreach (ErrorLogs error in file.errors)
+                {
+                    errors.Add(error.error);
+                }
+
+
+                filesErrors.Add(new FileErrorsDTO
+                {
+                    filename = file.filename,
+                    errors = errors
+                });
+            }
+            if (index >= 0 && index <= filesErrors.Count)
+                return new ObjectResult(filesErrors[index]);
+            else
+                return NotFound(new Error { statusCode = 404, error = "Элемент с таким индексом не найден!" });
         }
     }
 }
