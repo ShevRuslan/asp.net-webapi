@@ -38,7 +38,7 @@ namespace WebApplication1.Controllers
             return new ObjectResult(foundBooks);
         }
         [HttpGet("api/errors")]
-        public IActionResult GetErrors(bool value)
+        public IActionResult GetErrors()
         {
             StreamReader stream = new StreamReader(pathToJson);
             FileLogs jsonObject = JsonSerializer.Deserialize<FileLogs>(stream.ReadToEnd());
@@ -63,7 +63,7 @@ namespace WebApplication1.Controllers
             return new ObjectResult(filesErrors);
         }
         [HttpGet("api/errors/count")]
-        public IActionResult GetErrorCount(bool value)
+        public IActionResult GetErrorCount()
         {
             StreamReader stream = new StreamReader(pathToJson);
             FileLogs jsonObject = JsonSerializer.Deserialize<FileLogs>(stream.ReadToEnd());
