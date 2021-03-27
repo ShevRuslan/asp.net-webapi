@@ -130,5 +130,21 @@ namespace WebApplication1.Controllers
                 filenames = filenames,
             });
         }
+        [HttpPost("api/newErrors")]
+        public IActionResult AddNewErrors([FromForm] string data)
+        {
+            StreamReader stream = new StreamReader(pathToJson);
+            try
+            {
+                FileLogs jsonObject = JsonSerializer.Deserialize<FileLogs>(data);
+                string fileName = DateTime.Now.ToString("dd-MM-yyyy_HH-mm-ss");
+                System.IO.File.WriteAllText(String.Format("{0}.json", fileName), data);
+                return new ObjectResult(jsonObject);
+            }
+            catch(Exception error)
+            {
+                return BadRequest(new { error = "Данные не правильные! Ошибка парсинга!" });
+            }
+        }
     }
 }

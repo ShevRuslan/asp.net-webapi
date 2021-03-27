@@ -1,0 +1,16 @@
+{
+  "scan": {
+    "scanTime": "2018-12-06T15:10:58.315148+06:00",
+    "db": "farvaterdemo",
+    "server": "sqlexpress",
+    "errorCount": 3
+  },
+  "files": [
+    {
+      "filename": "001.vbs",
+      "result": false,
+      "errors": [{ "module": "compiler", "ecode": 2, "error": "Ошибка синтаксиса" }],
+      "scantime": "2018-12-06T15:10:58.4069484+06:00"
+    }
+   ]
+}
