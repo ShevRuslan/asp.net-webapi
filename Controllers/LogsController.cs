@@ -28,5 +28,14 @@ namespace WebApplication1.Controllers
             FileLogs jsonObject = JsonSerializer.Deserialize<FileLogs>(stream.ReadToEnd());
             return new ObjectResult(jsonObject.scan);
         }
+
+        [HttpGet("api/filenames")]
+        public IActionResult GetFilenameByResult(bool value)
+        {
+            StreamReader stream = new StreamReader(pathToJson);
+            FileLogs jsonObject = JsonSerializer.Deserialize<FileLogs>(stream.ReadToEnd());
+            List<FilesLogs> foundBooks = jsonObject.files.FindAll(file => file.result == value);
+            return new ObjectResult(foundBooks);
+        }
     }
 }
