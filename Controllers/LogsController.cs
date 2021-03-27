@@ -97,5 +97,38 @@ namespace WebApplication1.Controllers
             else
                 return NotFound(new Error { statusCode = 404, error = "Элемент с таким индексом не найден!" });
         }
+        [HttpGet("api/query/check")]
+        public IActionResult GetFileByNameQuery()
+        {
+            StreamReader stream = new StreamReader(pathToJson);
+            FileLogs jsonObject = JsonSerializer.Deserialize<FileLogs>(stream.ReadToEnd());
+            List<FilesLogs> files = jsonObject.files;
+            int total = 0;
+            int correct = 0;
+            int errors = 0;
+            List<string> filenames = new List<string>();
+            foreach(FilesLogs file in files)
+            {
+                string[] arrayWord = file.filename.ToLower().Split("_");
+                if(arrayWord[0] == "query")
+                {
+                    total++;
+                    if (file.result) {
+                        correct++;
+                    }
+                    else
+                    {
+                        errors++;
+                        filenames.Add(file.filename);
+                    }
+                }
+            }
+            return new ObjectResult(new QueryCheckDTO { 
+                correct = correct,
+                total = total,
+                errors = errors,
+                filenames = filenames,
+            });
+        }
     }
 }
