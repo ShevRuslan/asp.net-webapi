@@ -14,35 +14,37 @@ namespace WebApplication1.Controllers
     public class LogsController : Controller
     {
         private string pathToJson = "data.json";
+        private string text = "";
+        public LogsController()
+        {
+            StreamReader stream = new StreamReader(pathToJson);
+            text = stream.ReadToEnd();
+        }
 
         [HttpGet("api/allData")]
         public IActionResult GetAllData ()
         {
-            StreamReader stream = new StreamReader(pathToJson);
-            return new ObjectResult(stream.ReadToEnd());
+            return new ObjectResult(text);
         }
 
         [HttpGet("api/scan")]
         public IActionResult GetScan()
         {
-            StreamReader stream = new StreamReader(pathToJson);
-            FileLogs jsonObject = JsonSerializer.Deserialize<FileLogs>(stream.ReadToEnd());
+            FileLogs jsonObject = JsonSerializer.Deserialize<FileLogs>(text);
             return new ObjectResult(jsonObject.scan);
         }
 
         [HttpGet("api/filenames")]
         public IActionResult GetFilenameByResult(bool value)
         {
-            StreamReader stream = new StreamReader(pathToJson);
-            FileLogs jsonObject = JsonSerializer.Deserialize<FileLogs>(stream.ReadToEnd());
+            FileLogs jsonObject = JsonSerializer.Deserialize<FileLogs>(text);
             List<FilesLogs> foundBooks = jsonObject.files.FindAll(file => file.result == value);
             return new ObjectResult(foundBooks);
         }
         [HttpGet("api/errors")]
         public IActionResult GetErrors()
         {
-            StreamReader stream = new StreamReader(pathToJson);
-            FileLogs jsonObject = JsonSerializer.Deserialize<FileLogs>(stream.ReadToEnd());
+            FileLogs jsonObject = JsonSerializer.Deserialize<FileLogs>(text);
             List<FilesLogs> files = jsonObject.files.FindAll(file => file.result == false);
             List<FileErrorsDTO> filesErrors = new List<FileErrorsDTO>();
             foreach(FilesLogs file in files)
@@ -66,15 +68,13 @@ namespace WebApplication1.Controllers
         [HttpGet("api/errors/count")]
         public IActionResult GetErrorCount()
         {
-            StreamReader stream = new StreamReader(pathToJson);
-            FileLogs jsonObject = JsonSerializer.Deserialize<FileLogs>(stream.ReadToEnd());
+            FileLogs jsonObject = JsonSerializer.Deserialize<FileLogs>(text);
             return new ObjectResult(jsonObject.scan.errorCount);
         }
         [HttpGet("api/errors/{index}")]
         public IActionResult GetErrorCount(int index)
         {
-            StreamReader stream = new StreamReader(pathToJson);
-            FileLogs jsonObject = JsonSerializer.Deserialize<FileLogs>(stream.ReadToEnd());
+            FileLogs jsonObject = JsonSerializer.Deserialize<FileLogs>(text);
             List<FilesLogs> files = jsonObject.files.FindAll(file => file.result == false);
             List<FileErrorsDTO> filesErrors = new List<FileErrorsDTO>();
             foreach (FilesLogs file in files)
@@ -93,16 +93,15 @@ namespace WebApplication1.Controllers
                     errors = errors
                 });
             }
-            if (index >= 0 && index <= filesErrors.Count)
+            if (index >= 0 && index < filesErrors.Count)
                 return new ObjectResult(filesErrors[index]);
             else
-                return NotFound(new Error { statusCode = 404, error = "Элемент с таким индексом не найден!" });
+                return NotFound(new ErrorDTO { statusCode = 404, error = "Элемент с таким индексом не найден!" });
         }
         [HttpGet("api/query/check")]
         public IActionResult GetFileByNameQuery()
         {
-            StreamReader stream = new StreamReader(pathToJson);
-            FileLogs jsonObject = JsonSerializer.Deserialize<FileLogs>(stream.ReadToEnd());
+            FileLogs jsonObject = JsonSerializer.Deserialize<FileLogs>(text);
             List<FilesLogs> files = jsonObject.files;
             int total = 0;
             int correct = 0;
@@ -134,7 +133,6 @@ namespace WebApplication1.Controllers
         [HttpPost("api/newErrors")]
         public IActionResult AddNewErrors([FromForm] string data)
         {
-            StreamReader stream = new StreamReader(pathToJson);
             try
             {
                 FileLogs jsonObject = JsonSerializer.Deserialize<FileLogs>(data);

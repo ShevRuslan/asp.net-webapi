@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace WebApplication1.Controllers
+namespace WebApplication1
 {
-    public class Error
+    public class ErrorDTO
     {
         public int statusCode { get; set; }
         public string error { get; set; }
