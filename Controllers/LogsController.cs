@@ -24,7 +24,8 @@ namespace WebApplication1.Controllers
         [HttpGet("api/allData")]
         public IActionResult GetAllData ()
         {
-            return new ObjectResult(text);
+            FileLogs jsonObject = JsonSerializer.Deserialize<FileLogs>(text);
+            return new ObjectResult(jsonObject);
         }
 
         [HttpGet("api/scan")]
