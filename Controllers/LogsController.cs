@@ -35,10 +35,10 @@ namespace WebApplication1.Controllers
         }
 
         [HttpGet("api/filenames")]
-        public IActionResult GetFilenameByResult(bool value)
+        public IActionResult GetFilenameByResult(bool correct)
         {
             FileLogs jsonObject = JsonSerializer.Deserialize<FileLogs>(text);
-            List<FilesLogs> foundBooks = jsonObject.files.FindAll(file => file.result == value);
+            List<FilesLogs> foundBooks = jsonObject.files.FindAll(file => file.result == correct);
             return new ObjectResult(foundBooks);
         }
         [HttpGet("api/errors")]
